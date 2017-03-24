@@ -2,6 +2,11 @@ import json
 import requests
 import time
 
+###################################################################################
+#  --------------------------------  @Autekbot  --------------------------------  #
+#  --------------------------------  Samu Ampio --------------------------------  #
+###################################################################################
+
 TOKEN = "308527009:AAFPg5p53k-I0iYuWJNU-eDJTRGutg2Xx_8"
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 WHITELIST = {21942357, 152093174}
@@ -40,7 +45,8 @@ def send_message(text, chat_id):
     try:
         url = URL + "sendMessage?text={}&chat_id={}".format(text, chat_id)
     except UnicodeEncodeError:
-        url = URL + "sendMessage?text=I don't know how to say that.. :o&chat_id={}".format(chat_id)
+        url = URL + "sendMessage?text=I don't know " \
+                    "how to say that.. :o&chat_id={}".format(chat_id)
     get_url(url)
 
 
