@@ -1,6 +1,8 @@
 import json
 import requests
 import time
+import random
+from openpyxl import load_workbook
 
 ###################################################################################
 #  --------------------------------  @Autekbot  --------------------------------  #
@@ -48,6 +50,22 @@ def send_message(text, chat_id):
         url = URL + "sendMessage?text=I don't know " \
                     "how to say that.. :o&chat_id={}".format(chat_id)
     get_url(url)
+    return
+
+
+# onko_hallituksessa() tarkistaa lahettajan id:n ja vertaa sita Whitelistiin
+def onko_hallituksessa(paivitykset):
+    viim_paiv = len(paivitykset["result"]) - 1
+    if paivitykset["result"][viim_paiv]["message"]["from"]["id"] in WHITELIST:
+        return True
+    return False
+
+# hallitusnakki()
+def hallitusnakki():
+    worksheet = load_workbook('hallitus.xlsx').active
+    arpa = random.randrange(1, worksheet.max_row)
+    nakkinimi = worksheet['A{}'.format(arpa)].value
+    return nakkinimi
 
 
 def main():
@@ -56,12 +74,15 @@ def main():
         paivitykset = get_updates()
         viim_paiv = len(paivitykset["result"]) - 1
         if edellinen_paiv != viim_paiv:
-            if paivitykset["result"][viim_paiv]["message"]["from"]["id"] in WHITELIST:
+            if onko_hallituksessa(paivitykset):
                 teksti, chat = get_last_chat_id_and_text(paivitykset)
+                if teksti == "/nakki":
+                    teksti = hallitusnakki()
                 send_message(teksti, chat)
             else:
                 chat = get_last_chat_id_and_text(paivitykset)[1]
                 send_message("Who are you? O_o", chat)
+            edellinen_paiv = viim_paiv
         time.sleep(0.5)
-        edellinen_paiv = viim_paiv
+
 main()
