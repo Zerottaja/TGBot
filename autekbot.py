@@ -55,15 +55,22 @@ def send_message(text, chat_id):
 
 # onko_hallituksessa() tarkistaa lahettajan id:n ja vertaa sita Whitelistiin
 def onko_hallituksessa(paivitykset):
+    # Viimeisin viesti on listan viimeinen...
     viim_paiv = len(paivitykset["result"]) - 1
     if paivitykset["result"][viim_paiv]["message"]["from"]["id"] in WHITELIST:
         return True
     return False
 
-# hallitusnakki()
+
+# hallitusnakki() lukee botin tyokansiossa olevan hallitus-excelin
+# ja arpoo nimien joukosta yhden seka palauttaa sen.
 def hallitusnakki():
+    # Avataan hallitustaulukko.
     worksheet = load_workbook('hallitus.xlsx').active
+    # Tarkistetaan montako nimea on listassa
+    # ja arvotaan luku 1 ja maksimin valilta.
     arpa = random.randrange(1, worksheet.max_row)
+    # Kaivetaan arpalukua vastaava yhteystieto ja palautetaan se.
     nakkinimi = worksheet['A{}'.format(arpa)].value
     return nakkinimi
 
@@ -71,18 +78,27 @@ def hallitusnakki():
 def main():
     edellinen_paiv = None
     while True:
+        # Haetaan paivitykset serverilta.
         paivitykset = get_updates()
+        # Viimeisin viesti on listan viimeinen...
         viim_paiv = len(paivitykset["result"]) - 1
+        # Onko uusin viesti eri kuin viimeksi?
         if edellinen_paiv != viim_paiv:
+            # Onko lahettaja hallituksessa?
             if onko_hallituksessa(paivitykset):
+                # Tallennetaan teksti ja chat_id muuttujiin
                 teksti, chat = get_last_chat_id_and_text(paivitykset)
+                # /nakki komennolla kaynnistetaan nakkikone
                 if teksti == "/nakki":
                     teksti = hallitusnakki()
                 send_message(teksti, chat)
             else:
+                # Tuntemattomat saavat kylmaa katta
                 chat = get_last_chat_id_and_text(paivitykset)[1]
                 send_message("Who are you? O_o", chat)
+            # Paivitetaan tieto viimeisimmasta viestista
             edellinen_paiv = viim_paiv
+        # Odotetaan hyvan maun nimissa vahan aikaa
         time.sleep(0.5)
 
 main()
