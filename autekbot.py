@@ -82,13 +82,13 @@ def echo_all(paivitykset):
                 teksti = hallitusnakki()
                 send_message(teksti, chat)
                 continue
-        # /ovi-komennolla tarkistetaan oven mikrokytkimen tila. TODO
+        # /ovi-komennolla tarkistetaan oven mikrokytkimen tila.
         if teksti == "/ovi":
             if ovi.mittaa():
                 teksti = "Ovi on AUKI!"
             else:
                 teksti = "Ovi on KIINNI!"
-        # /valot-komennolla tutkitaan valaistuksen tila. TODO
+        # /valot-komennolla tutkitaan valaistuksen tila.
         elif teksti == "/valot":
             if valot.mittaa():
                 teksti = "Valot ON!"
