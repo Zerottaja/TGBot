@@ -3,6 +3,8 @@ import requests
 import time
 import random
 from openpyxl import load_workbook
+from ovianturi import OviAnturi
+from valoanturi import ValoAnturi
 
 ###################################################################################
 #  --------------------------------  @Autekbot  --------------------------------  #
@@ -67,6 +69,8 @@ def get_last_update_id(updates):
 # ja kasittelee ne tavalla tai toisella.
 def echo_all(paivitykset):
     # Kaydaan paivityslista lapi.
+    ovi = OviAnturi()
+    valot = ValoAnturi()
     for update in paivitykset["result"]:
         # Tallennetaan viestit ja chat_id:t muuttujiin.
         teksti = update["message"]["text"]
@@ -80,10 +84,16 @@ def echo_all(paivitykset):
                 continue
         # /ovi-komennolla tarkistetaan oven mikrokytkimen tila. TODO
         if teksti == "/ovi":
-            teksti = "Jaa-a, katso itse. :Q"
+            if ovi.mittaa():
+                teksti = "Ovi on AUKI!"
+            else:
+                teksti = "Ovi on KIINNI!"
         # /valot-komennolla tutkitaan valaistuksen tila. TODO
         elif teksti == "/valot":
-            teksti = "Olen sokea, en osaa sanoa. :("
+            if valot.mittaa():
+                teksti = "Valot ON!"
+            else:
+                teksti = "Valot POIS!"
         elif teksti == "/nakki":
             teksti = "Et ole hallituksessa!"
         send_message(teksti, chat)
