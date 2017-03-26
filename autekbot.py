@@ -11,7 +11,7 @@ from openpyxl import load_workbook
 
 TOKEN = "308527009:AAFPg5p53k-I0iYuWJNU-eDJTRGutg2Xx_8"
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
-WHITELIST = {21942357, 152093174}
+WHITELIST = {}  # 21942357, 152093174}
 
 
 def get_url(url):
@@ -26,8 +26,10 @@ def get_json_from_url(url):
     return js
 
 
-def get_updates():
+def get_updates(offset=None):
     url = URL + "getUpdates"
+    if offset:
+        url += "?offset={}".format(offset)
     js = get_json_from_url(url)
     return js
 
@@ -50,6 +52,41 @@ def send_message(text, chat_id):
         url = URL + "sendMessage?text=I don't know " \
                     "how to say that.. :o&chat_id={}".format(chat_id)
     get_url(url)
+    return
+
+
+def get_last_update_id(updates):
+    update_ids = []
+    for update in updates["result"]:
+        update_ids.append(int(update["update_id"]))
+    max_id = str(max(update_ids))
+    return int(max_id)
+
+
+# echo_all(paivitykset) kay lapi kaikki serverin puskurissa olevat viestit
+# ja kasittelee ne tavalla tai toisella.
+def echo_all(paivitykset):
+    # Kaydaan paivityslista lapi.
+    for update in paivitykset["result"]:
+        # Tallennetaan viestit ja chat_id:t muuttujiin.
+        teksti = update["message"]["text"]
+        chat = update["message"]["chat"]["id"]
+        # Onko lahettaja hallituksessa?
+        if onko_hallituksessa(paivitykset):
+            # /nakki-komennolla kaynnistetaan nakkikone
+            if teksti == "/nakki":
+                teksti = hallitusnakki()
+                send_message(teksti, chat)
+                continue
+        # /ovi-komennolla tarkistetaan oven mikrokytkimen tila. TODO
+        if teksti == "/ovi":
+            teksti = "Jaa-a, katso itse. :Q"
+        # /valot-komennolla tutkitaan valaistuksen tila. TODO
+        elif teksti == "/valot":
+            teksti = "Olen sokea, en osaa sanoa. :("
+        elif teksti == "/nakki":
+            teksti = "Et ole hallituksessa!"
+        send_message(teksti, chat)
     return
 
 
@@ -79,25 +116,10 @@ def main():
     edellinen_paiv = None
     while True:
         # Haetaan paivitykset serverilta.
-        paivitykset = get_updates()
-        # Viimeisin viesti on listan viimeinen...
-        viim_paiv = len(paivitykset["result"]) - 1
-        # Onko uusin viesti eri kuin viimeksi?
-        if edellinen_paiv != viim_paiv:
-            # Onko lahettaja hallituksessa?
-            if onko_hallituksessa(paivitykset):
-                # Tallennetaan teksti ja chat_id muuttujiin
-                teksti, chat = get_last_chat_id_and_text(paivitykset)
-                # /nakki komennolla kaynnistetaan nakkikone
-                if teksti == "/nakki":
-                    teksti = hallitusnakki()
-                send_message(teksti, chat)
-            else:
-                # Tuntemattomat saavat kylmaa katta
-                chat = get_last_chat_id_and_text(paivitykset)[1]
-                send_message("Who are you? O_o", chat)
-            # Paivitetaan tieto viimeisimmasta viestista
-            edellinen_paiv = viim_paiv
+        paivitykset = get_updates(edellinen_paiv)
+        if len(paivitykset["result"]) > 0:
+            edellinen_paiv = get_last_update_id(paivitykset) + 1
+            echo_all(paivitykset)
         # Odotetaan hyvan maun nimissa vahan aikaa
         time.sleep(0.5)
 
