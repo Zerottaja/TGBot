@@ -1,6 +1,7 @@
 
 
 class OviAnturi:
+
     def __init__(self):
         self.arvo = 0
 
