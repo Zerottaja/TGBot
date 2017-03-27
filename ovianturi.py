@@ -1,4 +1,4 @@
-
+import random
 
 class OviAnturi:
 
@@ -6,4 +6,4 @@ class OviAnturi:
         self.arvo = 0
 
     def mittaa(self):
-        return True
+        return random.randint(0, 1)

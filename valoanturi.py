@@ -1,4 +1,4 @@
-
+import random
 
 class ValoAnturi:
 
@@ -6,4 +6,4 @@ class ValoAnturi:
         self.arvo = 0
         
     def mittaa(self):
-        return True
+        return random.randint(0,1)

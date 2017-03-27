@@ -13,7 +13,7 @@ from valoanturi import ValoAnturi
 
 TOKEN = "308527009:AAFPg5p53k-I0iYuWJNU-eDJTRGutg2Xx_8"
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
-WHITELIST = {21942357, 152093174}
+WHITELIST = {21942357, 152093174, 39307350, 141787534}
 
 
 def get_url(url):
@@ -73,30 +73,36 @@ def echo_all(paivitykset):
     valot = ValoAnturi()
     for update in paivitykset["result"]:
         # Tallennetaan viestit ja chat_id:t muuttujiin.
-        teksti = update["message"]["text"]
+        try:
+            teksti = update["message"]["text"]
+        except KeyError or UnicodeEncodeError:
+            continue
         chat = update["message"]["chat"]["id"]
         # Onko lahettaja hallituksessa?
         if onko_hallituksessa(paivitykset):
             # /nakki-komennolla kaynnistetaan nakkikone
-            if teksti == "/nakki":
+            if teksti == "/nakki" or (teksti == "/nakki@Autekbot"):
                 teksti = hallitusnakki()
                 send_message(teksti, chat)
                 continue
         # /ovi-komennolla tarkistetaan oven mikrokytkimen tila.
-        if teksti == "/ovi":
+        if teksti == "/ovi" or teksti == "/ovi@Autekbot":
             if ovi.mittaa():
                 teksti = "Ovi on AUKI!"
             else:
                 teksti = "Ovi on KIINNI!"
+            send_message(teksti, chat)
         # /valot-komennolla tutkitaan valaistuksen tila.
-        elif teksti == "/valot":
+        elif teksti == "/valot" or teksti == "/valot@Autekbot":
             if valot.mittaa():
                 teksti = "Valot ON!"
             else:
                 teksti = "Valot POIS!"
-        elif teksti == "/nakki":
+            send_message(teksti, chat)
+        elif (teksti == "/nakki") or (teksti == "/nakki@Autekbot"):
             teksti = "Et ole hallituksessa!"
-        send_message(teksti, chat)
+            send_message(teksti, chat)
+
     return
 
 
