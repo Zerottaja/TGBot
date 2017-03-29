@@ -1,10 +1,14 @@
 import json
-import requests
 import time
 import random
+
+import requests
+from requests import exceptions
 from openpyxl import load_workbook
+
 from ovianturi import OviAnturi
 from valoanturi import ValoAnturi
+
 
 ###############################################################################
 #  --------------------------------  @Autekbot  ----------------------------  #
@@ -17,9 +21,18 @@ WHITELIST = {21942357, 152093174, 39307350, 141787534}
 
 
 def get_url(url):
-    response = requests.get(url)
-    content = response.content.decode("utf8")
-    return content
+    onnistui = False
+    # Niin kauan kun
+    while not onnistui:
+        try:
+            response = requests.get(url)
+            content = response.content.decode("utf8")
+        except requests.exceptions.ConnectionError:
+            print("sleeping..")
+            time.sleep(10)
+            onnistui = False
+            continue
+        return content
 
 
 def get_json_from_url(url):

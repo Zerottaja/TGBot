@@ -1,5 +1,6 @@
 import random
 
+
 class OviAnturi:
 
     def __init__(self):
