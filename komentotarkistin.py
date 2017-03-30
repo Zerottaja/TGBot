@@ -30,7 +30,8 @@ def tarkista_komento(update, teksti, chat):
             teksti = "Valot POIS!"
     elif (teksti == "/nakki") or (teksti == "/nakki@Autekbot"):
         teksti = "Et ole hallituksessa!"
-
+    else:
+        teksti = None
     return teksti, chat
 
 

@@ -15,18 +15,21 @@ import komentotarkistin
 
 TOKEN = "308527009:AAFPg5p53k-I0iYuWJNU-eDJTRGutg2Xx_8"
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
-WHITELIST = {21942357, 152093174, 39307350, 141787534}
+WHITELIST = {219423577, 152093174, 39307350, 141787534}
 
 
 def get_url(url):
     onnistui = False
-    # Niin kauan kun
+    # Niin kauan kun saadaan yhteys, yritetaan 10s valein.
     while not onnistui:
         try:
             response = requests.get(url)
             content = response.content.decode("utf8")
         except requests.exceptions.ConnectionError:
-            print("sleeping..")
+            print("Ei yhteytta, nukutaan... {}.{}.{} @ {}:{}:{}"
+                .format(time.localtime()[2],
+                time.localtime()[1],time.localtime()[0],time.localtime()[3],
+                time.localtime()[4],time.localtime()[5],))
             time.sleep(10)
             onnistui = False
             continue
@@ -47,15 +50,16 @@ def get_updates(offset=None):
     return js
 
 
-def get_last_chat_id_and_text(updates):
-    num_updates = len(updates["result"])
-    last_update = num_updates - 1
-    chat_id = updates["result"][last_update]["message"]["chat"]["id"]
-    try:
-        text = updates["result"][last_update]["message"]["text"]
-        return text, chat_id
-    except KeyError or UnicodeEncodeError:
-        return "I'm blind, you need to speak. U_U", chat_id
+# def get_last_chat_id_and_text(updates):
+#     print(dasdasd)
+#     num_updates = len(updates["result"])
+#     last_update = num_updates - 1
+#     chat_id = updates["result"][last_update]["message"]["chat"]["id"]
+#     try:
+#         text = updates["result"][last_update]["message"]["text"]
+#         return text, chat_id
+#     except KeyError or UnicodeEncodeError:
+#         return "I'm blind, you need to speak. U_U", chat_id
 
 
 def send_message(text, chat_id):
@@ -87,8 +91,10 @@ def echo_all(paivitykset):
         except KeyError or UnicodeEncodeError:
             continue
         chat = update["message"]["chat"]["id"]
-        vastausteksti, chat = komentotarkistin.tarkista_komento(update, teksti, chat)
-        send_message(vastausteksti, chat)
+        vastausteksti, chat = komentotarkistin.tarkista_komento(update,
+                                                                teksti, chat)
+        if vastausteksti:
+            send_message(vastausteksti, chat)
     return
 
 
