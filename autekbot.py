@@ -27,9 +27,9 @@ def get_url(url):
             content = response.content.decode("utf8")
         except requests.exceptions.ConnectionError:
             print("Ei yhteytta, nukutaan... {}.{}.{} @ {}:{}:{}"
-                .format(time.localtime()[2],
-                time.localtime()[1],time.localtime()[0],time.localtime()[3],
-                time.localtime()[4],time.localtime()[5],))
+                  .format(time.localtime()[2], time.localtime()[1],
+                          time.localtime()[0], time.localtime()[3],
+                          time.localtime()[4], time.localtime()[5],))
             time.sleep(10)
             onnistui = False
             continue
