@@ -1,42 +1,60 @@
-import autekbot
+import hallituspalaute
 
 from ovianturi import OviAnturi
 from valoanturi import ValoAnturi
 
 
 def tarkista_komento(update, teksti, chat):
+    import autekbot
     ovi = OviAnturi()
     valot = ValoAnturi()
-
-    # Onko lahettaja hallituksessa?
-    if onko_hallituksessa(update):
-        # /nakki-komennolla kaynnistetaan nakkikone
-        if teksti == "/nakki" or (teksti == "/nakki@Autekbot"):
-            teksti = autekbot.hallitusnakki()
-            return teksti, chat
 
     # /ovi-komennolla tarkistetaan oven mikrokytkimen tila.
     if teksti == "/ovi" or teksti == "/ovi@Autekbot":
         if ovi.mittaa():
-            teksti = "Ovi on AUKI!"
+            vastaus = "Ovi on AUKI!"
         else:
-            teksti = "Ovi on KIINNI!"
+            vastaus = "Ovi on KIINNI!"
 
     # /valot-komennolla tutkitaan valaistuksen tila.
     elif teksti == "/valot" or teksti == "/valot@Autekbot":
         if valot.mittaa():
-            teksti = "Valot ON!"
+            vastaus = "Valot ON!"
         else:
-            teksti = "Valot POIS!"
-    elif (teksti == "/nakki") or (teksti == "/nakki@Autekbot"):
-        teksti = "Et ole hallituksessa!"
+            vastaus = "Valot POIS!"
+
+    # /nakki-komennolla kaynnistetaan nakkikone
+    elif teksti == "/nakki" or teksti == "/nakki@Autekbot":
+        # Onko lahettaja hallituksessa?
+        if onko_hallituksessa(update):
+            vastaus = autekbot.hallitusnakki()
+        else:
+            vastaus = "Et ole hallituksessa!"
+
+    # /hallituspalaute-komennolla vastaanotetaan palautetta
+    elif teksti == "/hallituspalaute" or teksti == \
+            "/hallituspalaute@Autekbot":
+        vastaus = "Kerro palautteesi tavallisena kirjoituksena alle."
+        autekbot.odotettavien_lista[chat] = None
+
+    # Viesti ei ollut komento
     else:
-        teksti = None
-    return teksti, chat
+        # Tarkistataan kuitenkin odotetaanko me lahettajalta palautetta
+        if chat in autekbot.odotettavien_lista:
+            # Kirjataan palaute ylos
+            hallituspalaute.kirjaa_hallituspalaute(teksti)
+            # Kun palaute on ylhaalla, ei tarvitse odottaa enaa
+            del autekbot.odotettavien_lista[chat]
+            vastaus = "Kiitos palautteestasi!"
+        else:
+            vastaus = None
+
+    return vastaus, chat
 
 
 # onko_hallituksessa() tarkistaa lahettajan id:n ja vertaa sita Whitelistiin
 def onko_hallituksessa(update):
+    import autekbot
     if update["message"]["from"]["id"] in autekbot.WHITELIST:
         return True
     return False

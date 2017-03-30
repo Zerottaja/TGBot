@@ -16,6 +16,7 @@ import komentotarkistin
 TOKEN = "308527009:AAFPg5p53k-I0iYuWJNU-eDJTRGutg2Xx_8"
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 WHITELIST = {219423577, 152093174, 39307350, 141787534}
+odotettavien_lista = {}
 
 
 def get_url(url):
@@ -91,8 +92,8 @@ def echo_all(paivitykset):
         except KeyError or UnicodeEncodeError:
             continue
         chat = update["message"]["chat"]["id"]
-        vastausteksti, chat = komentotarkistin.tarkista_komento(update,
-                                                                teksti, chat)
+        vastausteksti, chat = komentotarkistin.tarkista_komento(update, teksti,
+                                               chat)
         if vastausteksti:
             send_message(vastausteksti, chat)
     return

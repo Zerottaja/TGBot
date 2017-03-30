@@ -2,16 +2,21 @@ import time
 from openpyxl import load_workbook
 
 
-def kirjaa_hallituspalaute():
+def kirjaa_hallituspalaute(palaute):
     # Avataan hallitustaulukko.
     wb = load_workbook('hallituspalaute.xlsx')
     worksheet = wb.active
     palautteiden_lkm = worksheet.max_row
-    worksheet['A{}'.format(palautteiden_lkm + 1)] = \
-        "Palautetta saatana! {}.{}.{} @ {}:{}".format(time.localtime()[2],
-                                                      time.localtime()[1],
-                                                      time.localtime()[0],
-                                                      time.localtime()[3],
-                                                      time.localtime()[4])
-    wb.save('hallituspalaute.xlsx')
+    kirjattava = "{} {}.{}.{} @ {}:{}".format(palaute, time.localtime()[2],
+                                              time.localtime()[1],
+                                              time.localtime()[0],
+                                              time.localtime()[3],
+                                              time.localtime()[4])
+    worksheet['A{}'.format(palautteiden_lkm + 1)] = kirjattava
+
+    try:
+        wb.save('hallituspalaute.xlsx')
+    except PermissionError:
+        print("Ei voitu tallentaa palautetta: '" + kirjattava + "'")
+
     return
