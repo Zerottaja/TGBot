@@ -5,9 +5,7 @@ import random
 import requests
 from requests import exceptions
 from openpyxl import load_workbook
-
-from ovianturi import OviAnturi
-from valoanturi import ValoAnturi
+import komentotarkistin
 
 
 ###############################################################################
@@ -82,8 +80,6 @@ def get_last_update_id(updates):
 # ja kasittelee ne tavalla tai toisella.
 def echo_all(paivitykset):
     # Kaydaan paivityslista lapi.
-    ovi = OviAnturi()
-    valot = ValoAnturi()
     for update in paivitykset["result"]:
         # Tallennetaan viestit ja chat_id:t muuttujiin.
         try:
@@ -91,41 +87,9 @@ def echo_all(paivitykset):
         except KeyError or UnicodeEncodeError:
             continue
         chat = update["message"]["chat"]["id"]
-        # Onko lahettaja hallituksessa?
-        if onko_hallituksessa(paivitykset):
-            # /nakki-komennolla kaynnistetaan nakkikone
-            if teksti == "/nakki" or (teksti == "/nakki@Autekbot"):
-                teksti = hallitusnakki()
-                send_message(teksti, chat)
-                continue
-        # /ovi-komennolla tarkistetaan oven mikrokytkimen tila.
-        if teksti == "/ovi" or teksti == "/ovi@Autekbot":
-            if ovi.mittaa():
-                teksti = "Ovi on AUKI!"
-            else:
-                teksti = "Ovi on KIINNI!"
-            send_message(teksti, chat)
-        # /valot-komennolla tutkitaan valaistuksen tila.
-        elif teksti == "/valot" or teksti == "/valot@Autekbot":
-            if valot.mittaa():
-                teksti = "Valot ON!"
-            else:
-                teksti = "Valot POIS!"
-            send_message(teksti, chat)
-        elif (teksti == "/nakki") or (teksti == "/nakki@Autekbot"):
-            teksti = "Et ole hallituksessa!"
-            send_message(teksti, chat)
-
+        vastausteksti, chat = komentotarkistin.tarkista_komento(update, teksti, chat)
+        send_message(vastausteksti, chat)
     return
-
-
-# onko_hallituksessa() tarkistaa lahettajan id:n ja vertaa sita Whitelistiin
-def onko_hallituksessa(paivitykset):
-    # Viimeisin viesti on listan viimeinen...
-    viim_paiv = len(paivitykset["result"]) - 1
-    if paivitykset["result"][viim_paiv]["message"]["from"]["id"] in WHITELIST:
-        return True
-    return False
 
 
 # hallitusnakki() lukee botin tyokansiossa olevan hallitus-excelin
