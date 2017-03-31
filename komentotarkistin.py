@@ -2,6 +2,7 @@ import hallituspalaute
 
 from ovianturi import OviAnturi
 from valoanturi import ValoAnturi
+import datetime
 
 
 def tarkista_komento(update, teksti, chat):
@@ -35,8 +36,8 @@ def tarkista_komento(update, teksti, chat):
     elif teksti == "/hallituspalaute" or teksti == \
             "/hallituspalaute@Autekbot":
         vastaus = "Kerro palautteesi tavallisena kirjoituksena alle." \
-                  " Se on anonyymi, ellet allekirjoita palautetta."
-        autekbot.odotettavien_lista[chat] = None
+                  " Se on anonyymi, ellet erikseen allekirjoita palautetta."
+        autekbot.odotettavien_lista[chat] = datetime.datetime.now()
 
     # Viesti ei ollut komento
     else:
