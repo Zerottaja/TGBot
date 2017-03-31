@@ -34,7 +34,8 @@ def tarkista_komento(update, teksti, chat):
     # /hallituspalaute-komennolla vastaanotetaan palautetta
     elif teksti == "/hallituspalaute" or teksti == \
             "/hallituspalaute@Autekbot":
-        vastaus = "Kerro palautteesi tavallisena kirjoituksena alle."
+        vastaus = "Kerro palautteesi tavallisena kirjoituksena alle." \
+                  " Se on anonyymi, ellet allekirjoita palautetta."
         autekbot.odotettavien_lista[chat] = None
 
     # Viesti ei ollut komento

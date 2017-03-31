@@ -93,7 +93,7 @@ def echo_all(paivitykset):
             continue
         chat = update["message"]["chat"]["id"]
         vastausteksti, chat = komentotarkistin.tarkista_komento(update, teksti,
-                                               chat)
+                                                                chat)
         if vastausteksti:
             send_message(vastausteksti, chat)
     return
