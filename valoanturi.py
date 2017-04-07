@@ -1,6 +1,12 @@
 import random
 
 
+RaspberryPi = False
+
+if RaspberryPi:
+    import RPi.GPIO as GPIO
+
+
 class ValoAnturi:
 
     def __init__(self):

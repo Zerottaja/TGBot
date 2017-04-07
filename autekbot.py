@@ -3,7 +3,7 @@ import time
 import random
 
 import requests
-# from requests import exceptions
+from requests import exceptions
 from openpyxl import load_workbook
 import komentotarkistin
 
@@ -121,6 +121,6 @@ def main():
             edellinen_paiv = get_last_update_id(paivitykset) + 1
             echo_all(paivitykset)
         # Odotetaan hyvan maun nimissa vahan aikaa
-        time.sleep(0.5)
+        time.sleep(1)
 
 main()
