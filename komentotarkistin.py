@@ -41,7 +41,7 @@ def tarkista_komento(update, teksti, chat):
 
     # Viesti ei ollut komento
     else:
-        # Tarkistataan kuitenkin odotetaanko me lahettajalta palautetta
+        # Tarkistataan kuitenkin odotetaanko lahettajalta palautetta
         if chat in autekbot.odotettavien_lista:
             # Kirjataan palaute ylos
             hallituspalaute.kirjaa_hallituspalaute(teksti)

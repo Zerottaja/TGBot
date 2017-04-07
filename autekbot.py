@@ -3,7 +3,7 @@ import time
 import random
 
 import requests
-from requests import exceptions
+# from requests import exceptions
 from openpyxl import load_workbook
 import komentotarkistin
 

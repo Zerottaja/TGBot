@@ -16,7 +16,7 @@ def kirjaa_hallituspalaute(palaute):
 
     try:
         wb.save('hallituspalaute.xlsx')
-    except PermissionError:
+    except IOError or PermissionError:
         print("Ei voitu tallentaa palautetta: '" + kirjattava + "'")
 
     return
