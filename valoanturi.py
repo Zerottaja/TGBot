@@ -20,6 +20,7 @@ try:
             else:
                 vastaus = "Sekä katto- että bilevalot ovat päällä..?"
             return vastaus
+
 except ImportError:
     print("GPIO-jako toimii vain Raspberry-alustalla t. ValoAnturi")
     GPIO = None

@@ -9,7 +9,11 @@ try:
             GPIO.input(self.ovipinni)
 
         def mittaa(self):
-            return random.randint(0, 1)
+            if self.ovipinni == 1:
+                vastaus = "Ovi on auki."
+            else:
+                vastaus = "Ovi on kiinni."
+            return vastaus
 except ImportError:
     print("GPIO-jako toimii vain Raspberry-alustalla t. OviAnturi")
     GPIO = None
@@ -17,7 +21,12 @@ except ImportError:
     class OviAnturi:
 
         def __init__(self):
-            self.arvo = 0
+            self.ovipinni = 11
 
         def mittaa(self):
-            return random.randint(0, 1)
+            self.ovipinni = random.randint(0, 1)
+            if self.ovipinni == 1:
+                vastaus = "Ovi on auki."
+            else:
+                vastaus = "Ovi on kiinni."
+            return vastaus

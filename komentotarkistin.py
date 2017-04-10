@@ -12,10 +12,7 @@ def tarkista_komento(update, teksti, chat):
 
     # /ovi-komennolla tarkistetaan oven mikrokytkimen tila.
     if teksti == "/ovi" or teksti == "/ovi@Autekbot":
-        if ovi.mittaa():
-            vastaus = "Ovi on AUKI!"
-        else:
-            vastaus = "Ovi on KIINNI!"
+        vastaus = ovi.mittaa()
 
     # /valot-komennolla tutkitaan valaistuksen tila.
     elif teksti == "/valot" or teksti == "/valot@Autekbot":
