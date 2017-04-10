@@ -64,7 +64,7 @@ def tarkista_komento(update, teksti, chat):
                 # Aikaeron ollessa yli 15 min, aikakatkaistaan odotus
                 del autekbot.odotettavien_lista[chat]
                 vastaus = "Palautteen odotus aikakatkaistiin " \
-                          "(yli 15 min hallituspalaute-käskystä)."
+                          u"(yli 15 min hallituspalaute-käskystä)."
         else:
             vastaus = None
 
