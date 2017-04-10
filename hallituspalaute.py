@@ -20,3 +20,19 @@ def kirjaa_hallituspalaute(palaute):
         print("Ei voitu tallentaa palautetta: '" + kirjattava + "'")
 
     return
+
+
+def raportti():
+    # Avataan hallitustaulukko.
+    wb = load_workbook('hallituspalaute.xlsx')
+    worksheet = wb.active
+    palautteiden_lkm = worksheet.max_row
+    if palautteiden_lkm <= 6:
+        alaraja = 2
+    else:
+        alaraja = palautteiden_lkm - 5
+    palautettava = ""
+    for i in range(alaraja, palautteiden_lkm + 1):
+        palautettava = palautettava + worksheet['A{}'.format(i)].value + "\n"
+
+    return palautettava

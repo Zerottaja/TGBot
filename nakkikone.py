@@ -12,4 +12,5 @@ def hallitusnakki():
     arpa = random.randrange(1, worksheet.max_row)
     # Kaivetaan arpalukua vastaava yhteystieto ja palautetaan se.
     nakkinimi = worksheet['A{}'.format(arpa)].value
+
     return nakkinimi

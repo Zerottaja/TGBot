@@ -69,7 +69,7 @@ def get_last_update_id(updates):
 
 # echo_all(paivitykset) kay lapi kaikki serverin puskurissa olevat viestit
 # ja kasittelee ne tavalla tai toisella.
-def echo_all(paivitykset):
+def answer_all(paivitykset):
     # Kaydaan paivityslista lapi.
     for update in paivitykset["result"]:
         # Tallennetaan viestit ja chat_id:t muuttujiin.
@@ -92,8 +92,8 @@ def main():
         paivitykset = get_updates(edellinen_paiv)
         if len(paivitykset["result"]) > 0:
             edellinen_paiv = get_last_update_id(paivitykset) + 1
-            echo_all(paivitykset)
-        # Odotetaan hyvan maun nimissa vahan aikaa
+            answer_all(paivitykset)
+        # Odotetaan hyvan maun nimissa hetki
         time.sleep(1)
 
 main()

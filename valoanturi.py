@@ -1,4 +1,3 @@
-import random
 try:
     import RPi.GPIO as GPIO
 
@@ -11,6 +10,7 @@ try:
             GPIO.input(self.bilepinni)
 
         def mittaa(self):
+            # Tarkistetaan valopinnien tila ja palautetaan vastaus
             if self.kattopinni == 0 and self.bilepinni == 0:
                 vastaus = "Kaikki valot ovat pois."
             elif self.kattopinni == 0 and self.bilepinni == 1:
@@ -19,11 +19,13 @@ try:
                 vastaus = "Valot ovat päällä."
             else:
                 vastaus = "Sekä katto- että bilevalot ovat päällä..?"
+
             return vastaus
 
 except ImportError:
     print("GPIO-jako toimii vain Raspberry-alustalla t. ValoAnturi")
     GPIO = None
+    import random
 
     class ValoAnturi:
 

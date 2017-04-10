@@ -6,6 +6,8 @@ from valoanturi import ValoAnturi
 import datetime
 
 
+# tarkista_komento() lukee paivityksen sisallon ja maarittelee
+#  mita sen kanssa tehdaan jos tehdaan
 def tarkista_komento(update, teksti, chat):
     import autekbot
     ovi = OviAnturi()
@@ -24,6 +26,14 @@ def tarkista_komento(update, teksti, chat):
         # Onko lahettaja hallituksessa?
         if onko_hallituksessa(update):
             vastaus = nakkikone.hallitusnakki()
+        else:
+            vastaus = "Et ole hallituksessa!"
+
+    # /raportti-komennolla tulostetaan 5 viimeisinta hallituspalautetta
+    elif teksti == "/raportti" or teksti == "/raportti@Autekbot":
+        # Onko lahettaja hallituksessa?
+        if onko_hallituksessa(update):
+            vastaus = hallituspalaute.raportti()
         else:
             vastaus = "Et ole hallituksessa!"
 
