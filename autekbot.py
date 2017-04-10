@@ -5,7 +5,6 @@ import json
 import time
 
 import requests
-from requests import exceptions
 import komentotarkistin
 
 
@@ -16,8 +15,9 @@ import komentotarkistin
 
 TOKEN = "308527009:AAFPg5p53k-I0iYuWJNU-eDJTRGutg2Xx_8"
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
-WHITELIST = {21942357, 152093174, 39307350, 141787534}
+WHITELIST = []  # 21942357, 152093174, 39307350, 141787534]
 odotettavien_lista = {}
+salasana = "pass"
 
 
 def get_url(url):

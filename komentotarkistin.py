@@ -47,6 +47,10 @@ def tarkista_komento(update, teksti, chat):
                   " Se on anonyymi, ellet erikseen allekirjoita palautetta."
         autekbot.odotettavien_lista[chat] = datetime.datetime.now()\
             .replace(microsecond=0)
+    # Jos viesti oli whitelistin tunnussana, lisataan kayttaja listalle
+    elif teksti == autekbot.salasana:
+        vastaus = "Tervetuloa, ystävä \U0001f618"
+        autekbot.WHITELIST.append(update["message"]["from"]["id"])
 
     # Viesti ei ollut komento
     else:
@@ -67,7 +71,7 @@ def tarkista_komento(update, teksti, chat):
                 # Aikaeron ollessa yli 15 min, aikakatkaistaan odotus
                 del autekbot.odotettavien_lista[chat]
                 vastaus = "Palautteen odotus aikakatkaistiin " \
-                          "(yli 15 min hallituspalaute-käskystä)."
+                          "(yli 15 min hallituspalaute-komennosta)."
         else:
             vastaus = None
 
