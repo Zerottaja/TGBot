@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
 import hallituspalaute
 import nakkikone
 
@@ -10,15 +13,15 @@ import datetime
 #  mita sen kanssa tehdaan jos tehdaan
 def tarkista_komento(update, teksti, chat):
     import autekbot
-    ovi = OviAnturi()
-    valot = ValoAnturi()
 
     # /ovi-komennolla tarkistetaan oven mikrokytkimen tila.
     if teksti == "/ovi" or teksti == "/ovi@Autekbot":
+        ovi = OviAnturi()
         vastaus = ovi.mittaa()
 
     # /valot-komennolla tutkitaan valaistuksen tila.
     elif teksti == "/valot" or teksti == "/valot@Autekbot":
+        valot = ValoAnturi()
         vastaus = valot.mittaa()
 
     # /nakki-komennolla kaynnistetaan nakkikone
@@ -64,7 +67,7 @@ def tarkista_komento(update, teksti, chat):
                 # Aikaeron ollessa yli 15 min, aikakatkaistaan odotus
                 del autekbot.odotettavien_lista[chat]
                 vastaus = "Palautteen odotus aikakatkaistiin " \
-                          u"(yli 15 min hallituspalaute-käskystä)."
+                          "(yli 15 min hallituspalaute-käskystä)."
         else:
             vastaus = None
 

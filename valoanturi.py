@@ -1,13 +1,17 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
 try:
     import RPi.GPIO as GPIO
 
     class ValoAnturi:
 
         def __init__(self):
+            GPIO.setmode(GPIO.BOARD)
             self.kattopinni = 13
             self.bilepinni = 15
-            GPIO.input(self.kattopinni)
-            GPIO.input(self.bilepinni)
+            GPIO.setup(self.kattopinni, GPIO.IN)
+            GPIO.setup(self.bilepinni, GPIO.IN)
 
         def mittaa(self):
             # Tarkistetaan valopinnien tila ja palautetaan vastaus

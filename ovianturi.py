@@ -1,12 +1,16 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
 try:
     import RPi.GPIO as GPIO
 
     class OviAnturi:
 
         def __init__(self):
+            GPIO.setmode(GPIO.BOARD)
             # Maaritetaan pinni 11 inputiksi
             self.ovipinni = 11
-            GPIO.input(self.ovipinni)
+            GPIO.setup(self.ovipinni, GPIO.IN)
 
         def mittaa(self):
             # Tarkistetaan pinnin tila ja palautetaan vastaus
