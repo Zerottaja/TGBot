@@ -1,4 +1,5 @@
 import hallituspalaute
+import nakkikone
 
 from ovianturi import OviAnturi
 from valoanturi import ValoAnturi
@@ -22,7 +23,7 @@ def tarkista_komento(update, teksti, chat):
     elif teksti == "/nakki" or teksti == "/nakki@Autekbot":
         # Onko lahettaja hallituksessa?
         if onko_hallituksessa(update):
-            vastaus = autekbot.hallitusnakki()
+            vastaus = nakkikone.hallitusnakki()
         else:
             vastaus = "Et ole hallituksessa!"
 

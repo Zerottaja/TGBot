@@ -1,10 +1,8 @@
 import json
 import time
-import random
 
 import requests
 from requests import exceptions
-from openpyxl import load_workbook
 import komentotarkistin
 
 
@@ -15,7 +13,7 @@ import komentotarkistin
 
 TOKEN = "308527009:AAFPg5p53k-I0iYuWJNU-eDJTRGutg2Xx_8"
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
-WHITELIST = {219423577, 152093174, 39307350, 141787534}
+WHITELIST = {21942357, 152093174, 39307350, 141787534}
 odotettavien_lista = {}
 
 
@@ -49,18 +47,6 @@ def get_updates(offset=None):
         url += "?offset={}".format(offset)
     js = get_json_from_url(url)
     return js
-
-
-# def get_last_chat_id_and_text(updates):
-#     print(dasdasd)
-#     num_updates = len(updates["result"])
-#     last_update = num_updates - 1
-#     chat_id = updates["result"][last_update]["message"]["chat"]["id"]
-#     try:
-#         text = updates["result"][last_update]["message"]["text"]
-#         return text, chat_id
-#     except KeyError or UnicodeEncodeError:
-#         return "I'm blind, you need to speak. U_U", chat_id
 
 
 def send_message(text, chat_id):
@@ -97,19 +83,6 @@ def echo_all(paivitykset):
         if vastausteksti:
             send_message(vastausteksti, chat)
     return
-
-
-# hallitusnakki() lukee botin tyokansiossa olevan hallitus-excelin
-# ja arpoo nimien joukosta yhden seka palauttaa sen.
-def hallitusnakki():
-    # Avataan hallitustaulukko.
-    worksheet = load_workbook('hallitus.xlsx').active
-    # Tarkistetaan montako nimea on listassa
-    # ja arvotaan luku 1 ja maksimin valilta.
-    arpa = random.randrange(1, worksheet.max_row)
-    # Kaivetaan arpalukua vastaava yhteystieto ja palautetaan se.
-    nakkinimi = worksheet['A{}'.format(arpa)].value
-    return nakkinimi
 
 
 def main():
