@@ -31,17 +31,29 @@ def tarkista_komento(update, teksti, chat):
             "/hallituspalaute@Autekbot":
         vastaus = "Kerro palautteesi tavallisena kirjoituksena alle." \
                   " Se on anonyymi, ellet erikseen allekirjoita palautetta."
-        autekbot.odotettavien_lista[chat] = datetime.datetime.now()
+        autekbot.odotettavien_lista[chat] = datetime.datetime.now()\
+            .replace(microsecond=0)
 
     # Viesti ei ollut komento
     else:
         # Tarkistataan kuitenkin odotetaanko lahettajalta palautetta
         if chat in autekbot.odotettavien_lista:
-            # Kirjataan palaute ylos
-            hallituspalaute.kirjaa_hallituspalaute(teksti)
-            # Kun palaute on ylhaalla, ei tarvitse odottaa enaa
-            del autekbot.odotettavien_lista[chat]
-            vastaus = "Kiitos palautteestasi!"
+            # Taman hetken kellonaika
+            aika_nyt = datetime.datetime.now().replace(microsecond=0)
+            # Aikaero taman hetken ja hallituspalautekaskyn valilla
+            td = aika_nyt - autekbot.odotettavien_lista[chat]
+            # Jos aikaero alle 900 s eli 15 min
+            if td.seconds <= 900:
+                # Kirjataan palaute ylos
+                hallituspalaute.kirjaa_hallituspalaute(teksti)
+                # Kun palaute on ylhaalla, ei tarvitse odottaa enaa
+                del autekbot.odotettavien_lista[chat]
+                vastaus = "Kiitos palautteestasi!"
+            else:
+                # Aikaeron ollessa yli 15 min, aikakatkaistaan odotus
+                del autekbot.odotettavien_lista[chat]
+                vastaus = "Palautteen odotus aikakatkaistiin " \
+                          "(yli 15 min hallituspalaute-käskystä)."
         else:
             vastaus = None
 
