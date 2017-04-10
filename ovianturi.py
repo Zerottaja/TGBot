@@ -5,7 +5,8 @@ try:
     class OviAnturi:
 
         def __init__(self):
-            self.arvo = 0
+            self.ovipinni = 11
+            GPIO.input(self.ovipinni)
 
         def mittaa(self):
             return random.randint(0, 1)

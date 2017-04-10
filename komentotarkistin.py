@@ -19,10 +19,7 @@ def tarkista_komento(update, teksti, chat):
 
     # /valot-komennolla tutkitaan valaistuksen tila.
     elif teksti == "/valot" or teksti == "/valot@Autekbot":
-        if valot.mittaa():
-            vastaus = "Valot ON!"
-        else:
-            vastaus = "Valot POIS!"
+        vastaus = valot.mittaa()
 
     # /nakki-komennolla kaynnistetaan nakkikone
     elif teksti == "/nakki" or teksti == "/nakki@Autekbot":
