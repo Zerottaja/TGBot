@@ -30,7 +30,7 @@ def tarkista_komento(update, teksti, chat):
         # Onko lahettaja hallituksessa?
         if onko_hallituksessa(update):
             vastaus = "Arvonnan voittaja tänään on:\n" \
-                      + nakkikone.hallitusnakki().encode('utf8') + '!'
+                      + nakkikone.hallitusnakki() + '!'
         else:
             vastaus = "Et ole hallituksessa!"
 

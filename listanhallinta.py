@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
 from openpyxl import load_workbook
 from openpyxl import Workbook
 
