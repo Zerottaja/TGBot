@@ -3,10 +3,11 @@
 
 import json
 import time
-
 import requests
 import komentotarkistin
 import listanhallinta
+
+from requests import exceptions
 
 
 ###############################################################################
