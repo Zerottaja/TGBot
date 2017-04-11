@@ -29,7 +29,8 @@ def tarkista_komento(update, teksti, chat):
     elif teksti == "/nakki" or teksti == "/nakki@Autekbot":
         # Onko lahettaja hallituksessa?
         if onko_hallituksessa(update):
-            vastaus = nakkikone.hallitusnakki()
+            vastaus = "Arvonnan voittaja tänään on:\n" \
+                      + nakkikone.hallitusnakki() + "!"
         else:
             vastaus = "Et ole hallituksessa!"
 

@@ -71,7 +71,7 @@ def paivita_muuttujalista():
     korkein_rivi = worksheet.max_row
     # tyhjenetaan globaali muuttuja WHITELIST
     import autekbot
-    autekbot.WHITELIST.clear()
+    del autekbot.WHITELIST[:]
     # rakennetaan lista uudestaan
     for rivi in range(2, korkein_rivi + 1):
         autekbot.WHITELIST.append(worksheet['A{}'.format(rivi)].value)
