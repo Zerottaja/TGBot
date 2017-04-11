@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# !/usr/bin/python
 # -*- coding: utf8 -*-
 
 import hallituspalaute
@@ -30,7 +30,7 @@ def tarkista_komento(update, teksti, chat):
         # Onko lahettaja hallituksessa?
         if onko_hallituksessa(update):
             vastaus = "Arvonnan voittaja tänään on:\n" \
-                      + u'{}'.format(nakkikone.hallitusnakki()) + '!'
+                      + nakkikone.hallitusnakki().encode('utf8') + '!'
         else:
             vastaus = "Et ole hallituksessa!"
 

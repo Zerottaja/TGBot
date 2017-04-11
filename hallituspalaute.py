@@ -51,7 +51,7 @@ def raportti():
     # Palautetaan 10 (tai alle) viimeisinta palautetta
     palautettava = "10 viimeisintä palautetta:\n"
     for i in range(alaraja, palautteiden_lkm + 1):
-        palautettava = palautettava + str(worksheet['A{}'
-                                          .format(i)].value) + "\n"
+        palautettava = palautettava + worksheet['A{}'
+                                          .format(i)].value.encode('utf8') + "\n"
 
     return palautettava
