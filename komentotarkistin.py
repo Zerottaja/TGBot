@@ -29,7 +29,7 @@ def tarkista_komento(update, teksti, chat):
     elif teksti == "/nakki" or teksti == "/nakki@Autekbot":
         # Onko lahettaja hallituksessa?
         if onko_hallituksessa(update):
-            vastaus = "Arvonnan voittaja tänään on:\n" \
+            vastaus = "Arvonnan voittaja on:\n" \
                       + nakkikone.hallitusnakki() + '!'
         else:
             vastaus = "Et ole hallituksessa!"
@@ -52,7 +52,7 @@ def tarkista_komento(update, teksti, chat):
 
     # Jos viesti oli whitelistin tunnussana, lisataan kayttaja listalle
     elif teksti == autekbot.salasana:
-        vastaus = "Tervetuloa, ystävä \U0001f618"
+        vastaus = "Tervetuloa, ystävä " + "\xF0\x9F\x98\x98"
         listanhallinta.lisaa_kayttaja(update["message"]["from"]["id"])
 
     # Viesti ei ollut komento
