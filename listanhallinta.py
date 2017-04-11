@@ -2,8 +2,11 @@ from openpyxl import load_workbook
 from openpyxl import Workbook
 
 
+# lisaa_kayttaja() tutkii onko lisaysta pyytaneen kayttajan id jo listalla,
+# ja mikali ei ole, lisaa sen listaan seka excel-tiedostoon,
+# etta valimuistin muuttujalistaan
 def lisaa_kayttaja(kayttaja_id):
-
+    # Jos id ei ole viela listassa
     if not etsi_kayttaja(kayttaja_id):
         try:
             # Avataan id-taulukko.
@@ -12,12 +15,17 @@ def lisaa_kayttaja(kayttaja_id):
             wb = Workbook()
         worksheet = wb.active
         kayttajien_lkm = worksheet.max_row
-        worksheet['A{}'.format(kayttajien_lkm + 1)] = kayttaja_id
+        # lisataan id listan loppuun
+        worksheet['A{}'.format(kayttajien_lkm + 1)].value = kayttaja_id
         wb.save('WHITELIST.xlsx')
+        # paivitetaan myos valimuisti
+        paivita_muuttujalista()
 
     return
 
 
+# etsi_kayttaja() etsii id:n perusteella
+# excel-tiedostosta osumaa ja palauttaa loytyiko sita
 def etsi_kayttaja(kayttaja_id):
     try:
         # Avataan id-taulukko.
@@ -26,27 +34,45 @@ def etsi_kayttaja(kayttaja_id):
         return False
     worksheet = wb.active
     korkein_rivi = worksheet.max_row
-    print(korkein_rivi)
+    # jos korkein rivinumero on 1, listassa ei ole alkioita
     if korkein_rivi == 1:
         return False
 
+    # aloitetaan pyyhkaiseva haku 2. rivilta
     i = 2
     while i <= korkein_rivi:
-        print("loop: " + str(i))
+        # jos rivin arvo matchaa haetun id:n kanssa, palautetaan True
         if kayttaja_id == worksheet['A{}'.format(i)].value:
             return True
+        # jos rivin arvo ei matchaa mutta on tyhja, siirretaan
+        # listan viimeinen alkio tahan koloon listan siistimiseksi
         elif worksheet['A{}'.format(i)].value is None:
-            print(1)
             worksheet['A{}'.format(i)].value \
                 = worksheet['A{}'.format(korkein_rivi)].value
+            # kun viimeinen on kopioitu koloon, se voidaan poistaa lopusta
             worksheet['A{}'.format(korkein_rivi)].value = None
-            korkein_rivi = korkein_rivi - 1
+            # paivitetaan rivimaara
+            korkein_rivi = worksheet.max_row
             wb.save('WHITELIST.xlsx')
-        i = i + 1
-    print("nope")
-    print(worksheet['A9'].value)
+        i += 1
 
     return False
 
-# TODO: excel-listan siirto muuttujalistaan, jotta  exceliä ei
-# tarvitse joka kerta onko_hallituksessa() avata
+
+# paivita_muuttujalista() resetoi valimuistissa olevan whitelistin
+# ja rakentaa sen uudelleen excel-tiedoston perusteella
+def paivita_muuttujalista():
+    try:
+        # Avataan id-taulukko.
+        wb = load_workbook('WHITELIST.xlsx')
+    except FileNotFoundError:
+        return
+    worksheet = wb.active
+    korkein_rivi = worksheet.max_row
+    # tyhjenetaan globaali muuttuja WHITELIST
+    import autekbot
+    autekbot.WHITELIST.clear()
+    # rakennetaan lista uudestaan
+    for rivi in range(2, korkein_rivi + 1):
+        autekbot.WHITELIST.append(worksheet['A{}'.format(rivi)].value)
+    return

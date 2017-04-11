@@ -6,6 +6,7 @@ import time
 
 import requests
 import komentotarkistin
+import listanhallinta
 
 
 ###############################################################################
@@ -27,7 +28,7 @@ def get_url(url):
         try:
             response = requests.get(url)
             content = response.content.decode("utf8")
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError:  #
             print("Ei yhteytta, nukutaan... {}.{}.{} @ {}:{}:{}"
                   .format(time.localtime()[2], time.localtime()[1],
                           time.localtime()[0], time.localtime()[3],
@@ -90,6 +91,7 @@ def answer_all(paivitykset):
 
 def main():
     edellinen_paiv = None
+    listanhallinta.paivita_muuttujalista()
     while True:
         # Haetaan paivitykset serverilta.
         paivitykset = get_updates(edellinen_paiv)

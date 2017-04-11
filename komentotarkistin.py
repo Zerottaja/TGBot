@@ -3,6 +3,7 @@
 
 import hallituspalaute
 import nakkikone
+import listanhallinta
 
 from ovianturi import OviAnturi
 from valoanturi import ValoAnturi
@@ -47,10 +48,11 @@ def tarkista_komento(update, teksti, chat):
                   " Se on anonyymi, ellet erikseen allekirjoita palautetta."
         autekbot.odotettavien_lista[chat] = datetime.datetime.now()\
             .replace(microsecond=0)
+
     # Jos viesti oli whitelistin tunnussana, lisataan kayttaja listalle
     elif teksti == autekbot.salasana:
         vastaus = "Tervetuloa, ystävä \U0001f618"
-        autekbot.WHITELIST.append(update["message"]["from"]["id"])
+        listanhallinta.lisaa_kayttaja(update["message"]["from"]["id"])
 
     # Viesti ei ollut komento
     else:
