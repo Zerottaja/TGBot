@@ -9,7 +9,7 @@ def kirjaa_hallituspalaute(palaute):
     palautteen_pituus = len(palaute)
     if palautteen_pituus > 250:
         palautettava = "Liian pitkä palaute! Rajoita avautumista ja yritä" \
-                       " uudestaan alle 250 merkillä" \
+                       " uudestaan alle 250 merkillä ja " \
                        "/hallituspalaute-komennolla."
         return palautettava
 
