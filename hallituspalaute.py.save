@@ -10,6 +10,7 @@ def kirjaa_hallituspalaute(palaute):
     wb = load_workbook('hallituspalaute.xlsx')
     worksheet = wb.active
     palautteiden_lkm = worksheet.max_row
+
     kirjattava = "{} @ {}.{}.{}, {}:{}".format(palaute, time.localtime()[2],
                                                time.localtime()[1],
                                                time.localtime()[0],
@@ -49,10 +50,8 @@ def raportti():
         alaraja = palautteiden_lkm - 9
     # Palautetaan 10 (tai alle) viimeisinta palautetta
     palautettava = "10 viimeisintä palautetta:\n\n"
-    try:
-        for i in range(alaraja, palautteiden_lkm + 1):
-            palautettava = palautettava + worksheet['A{}'.format(i)]\
-                .value.encode('utf8') + "\n\n"
-    except TypeError:
-        print("Koodekkivirhe, olet windowsilla")
+    for i in range(alaraja, palautteiden_lkm + 1):
+        palautettava = palautettava + str(worksheet['A{}'.format(i)].value) + "\n\n"
+
     return palautettava
+w
