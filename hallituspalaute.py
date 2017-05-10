@@ -6,6 +6,13 @@ from openpyxl import load_workbook
 
 
 def kirjaa_hallituspalaute(palaute):
+    palautteen_pituus = len(palaute)
+    if palautteen_pituus > 250:
+        palautettava = "Liian pitkä palaute! Rajoita avautumista ja yritä" \
+                       " uudestaan alle 250 merkillä" \
+                       "/hallituspalaute-komennolla."
+        return palautettava
+
     # Avataan hallitustaulukko.
     wb = load_workbook('hallituspalaute.xlsx')
     worksheet = wb.active
@@ -31,10 +38,12 @@ def kirjaa_hallituspalaute(palaute):
     # Lopuksi tallennetaan muutokset
     try:
         wb.save('hallituspalaute.xlsx')
+        palautettava = "Kiitos palautteestasi!"
     except IOError or PermissionError:
         print("Ei voitu tallentaa palautetta: '" + kirjattava + "'")
+        palautettava = "Jokin meni pieleen, ei voitu tallentaa palautetta."
 
-    return
+    return palautettava
 
 
 def raportti():

@@ -66,10 +66,10 @@ def tarkista_komento(update, teksti, chat):
             # Jos aikaero alle 900 s eli 15 min
             if td.seconds <= 900:
                 # Kirjataan palaute ylos
-                hallituspalaute.kirjaa_hallituspalaute(teksti.encode('utf8'))
+                vastaus = hallituspalaute.\
+                    kirjaa_hallituspalaute(teksti.encode('utf8'))
                 # Kun palaute on ylhaalla, ei tarvitse odottaa enaa
                 del autekbot.odotettavien_lista[chat]
-                vastaus = "Kiitos palautteestasi!"
             else:
                 # Aikaeron ollessa yli 15 min, aikakatkaistaan odotus
                 del autekbot.odotettavien_lista[chat]
