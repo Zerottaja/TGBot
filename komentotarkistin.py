@@ -46,7 +46,8 @@ def tarkista_komento(update, teksti, chat):
     elif teksti == "/hallituspalaute" or teksti == \
             "/hallituspalaute@Autekbot":
         vastaus = "Kerro palautteesi tavallisena kirjoituksena alle." \
-                  " Se on anonyymi, ellet erikseen allekirjoita palautetta."
+                  " Se on anonyymi, ellet erikseen allekirjoita sitä." \
+                  "\n(max. 250 merkkiä)"
         autekbot.odotettavien_lista[chat] = datetime.datetime.now()\
             .replace(microsecond=0)
 
