@@ -1,3 +1,7 @@
 .idea
-_pycache_
+__pycache__
 WHITELIST.xlsx
+*.pyc
+hallitus.xlsx
+hallituspalaute.xlsx
+json_rakenne.ods
