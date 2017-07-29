@@ -14,7 +14,7 @@ try:
 
         def mittaa(self):
             # Tarkistetaan pinnin tila ja palautetaan vastaus
-            if self.ovipinni == 1:
+            if not self.ovipinni:
                 vastaus = "Ovi on auki."
             else:
                 vastaus = "Ovi on kiinni."

@@ -35,7 +35,7 @@ def kirjaa_hallituspalaute(palaute):
             worksheet['A{}'.format(rivi-50)] = \
                 worksheet['A{}'.format(rivi)].value
             worksheet['A{}'.format(rivi)].value = None
-    # Lopuksi tallennetaan muutokset
+    # Lopuksi tallennetaan muutokset tai ilmoitetaan virheesta
     try:
         wb.save('hallituspalaute.xlsx')
         palautettava = "Kiitos palautteestasi!"
